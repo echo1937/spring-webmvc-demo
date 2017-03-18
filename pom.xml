@@ -12,6 +12,7 @@
     <modules>
         <module>springmvc-demo</module>
         <module>ssm</module>
+        <module>ssm-advanced</module>
     </modules>
 
     <!-- 集中定义依赖版本号 -->
