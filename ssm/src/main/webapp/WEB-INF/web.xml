@@ -8,10 +8,10 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring/applicationContext-*.xml</param-value>
     </context-param>
-
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
 
     <servlet>
         <servlet-name>dispatcherServlet</servlet-name>
@@ -22,12 +22,12 @@
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
-
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
         <url-pattern>*.action</url-pattern>
     </servlet-mapping>
 
+    
     <!--配置POST请求乱码-->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>

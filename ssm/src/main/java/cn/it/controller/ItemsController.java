@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +23,7 @@ public class ItemsController {
     @Autowired
     private ItemsService itemsService;
 
-    @RequestMapping("/list")
+    @RequestMapping("/list.action")
     public ModelAndView itemsList() throws Exception {
         List<Items> itemsList = itemsService.list();
 
@@ -49,10 +51,19 @@ public class ItemsController {
         int id = Integer.parseInt(request.getParameter("id"));
 
         Items items = itemsService.findItemsById(id);
+        //model(模型): 模型中放入了返回给页面的数据,底层实际上用的是request域,但是对request域做了扩展.
         model.addAttribute("item", items);
-
         return "editItem";
     }
+
+    @RequestMapping("/itemEdit.action")
+    public String itemEdit(Model model, @RequestParam(value = "id", required = true) Integer item_id) throws Exception {
+        Items items = itemsService.findItemsById(item_id);
+        //model(模型): 模型中放入了返回给页面的数据,底层实际上用的是request作用域,但是对request作用域做了扩展.
+        model.addAttribute("item", items);
+        return "editItem";
+    }
+
 
     /**
      * 也支持直接接收基本类型：public String update(Integer id, String name, Float price, String detail) throws Exception {}
@@ -61,17 +72,15 @@ public class ItemsController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/updateItem")
+    @RequestMapping(value = "/updateItem", method = RequestMethod.POST)
     public String update(Items items) throws Exception {
         // items.setCreatetime(new Date());
-
-
         itemsService.updateItems(items);
         return "redirect:/list.action";
     }
 
     // 如果Controller中接收的入参是QueryVo,那么页面上input框的name属性值要等于"属性.属性..."的形式
-    @RequestMapping("/item/queryItem")
+    @RequestMapping(value = "/item/queryItem")
     public String queryItem(QueryVo vo) {
         System.out.println(vo.getItems().getName() + "  " + vo.getItems().getPrice());
         return "redirect:/list.action";
