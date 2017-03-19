@@ -58,10 +58,19 @@
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
         </dependency>
+        <dependency>
+            <groupId>commons-fileupload</groupId>
+            <artifactId>commons-fileupload</artifactId>
+            <!--只需要commons-fileupload一个依赖即可,commons-io会被自动引入-->
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <!--只需此一个依赖即可完成json支持, 不需要3个包-->
+        </dependency>
     </dependencies>
 
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
@@ -72,6 +81,6 @@
                 </configuration>
             </plugin>
         </plugins>
-
     </build>
+    
 </project>

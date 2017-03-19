@@ -6,9 +6,24 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script type="text/javascript" src="/js/jquery-1.4.4.min.js"></script>
     <title>查询商品列表</title>
 </head>
 <body>
+<script type="text/javascript">
+    function request_json() {
+        $.ajax({
+            type: "post",
+            url: "${pageContext.request.contextPath }/item/sendJson.action",
+            contentType: "application/json;charset=utf-8",
+            data: '{"name":"测试商品","price":99.9}',
+            success: function (data) {
+                alert(data);
+            }
+        });
+    }
+</script>
+<input type="button" value="sendJson" onclick="request_json()">
 <form action="${pageContext.request.contextPath }/item/itemAdd.action" method="post">
     添加商品：
     <table width="100%" border=1>
@@ -45,7 +60,7 @@
         </c:forEach>
         <td><input type="submit" value="批量删除"></td>
     </table>
-    
+
 </form>
 </body>
 
