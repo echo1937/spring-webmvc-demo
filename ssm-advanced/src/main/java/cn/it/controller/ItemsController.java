@@ -15,9 +15,6 @@ import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Created by Eric on 3/15/17.
- */
 @Controller
 public class ItemsController {
 
@@ -25,21 +22,23 @@ public class ItemsController {
     private ItemsService itemsService;
 
     @RequestMapping(value = {"/list"})
-    public ModelAndView itemsList(boolean u) throws Exception {
-        List<Items> itemsList = itemsService.list();
-
+    public ModelAndView itemsList() throws Exception {
         //创建ModelAndView对象
         ModelAndView modelAndView = new ModelAndView();
         //添加model(模型)，模型名为"itemList"，值为List<Items>对象itemsList
-        modelAndView.addObject("itemList", itemsList);
+        modelAndView.addObject("itemList", itemsService.list());
         //添加view(视图)，逻辑视图名为"itemList"
         modelAndView.setViewName("itemList");
 
-        if (u == true) {
-            modelAndView.setViewName("update");
-        }
         //如果没有配置视图解析器, 则需要指明视图的实际位：modelAndView.setViewName("/WEB-INF/jsp/itemList.jsp");
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/update")
+    public String itemsUpdate(Model model) throws Exception {
+        List<Items> itemsList = itemsService.list();
+        model.addAttribute("itemList", itemsList);
+        return "update";
     }
 
     /**
@@ -53,10 +52,8 @@ public class ItemsController {
     @RequestMapping("/itemEdit")
     public String itemEdit(Model model, HttpServletRequest request) throws Exception {
         int id = Integer.parseInt(request.getParameter("id"));
-
-        Items items = itemsService.findItemsById(id);
         //model(模型): 模型中放入了返回给页面的数据,底层实际上用的是request域,但是对request域做了扩展.
-        model.addAttribute("item", items);
+        model.addAttribute("item", itemsService.findItemsById(id));
         return "editItem";
     }
 
@@ -92,6 +89,12 @@ public class ItemsController {
         return "redirect:/list";
     }
 
+    @RequestMapping(value = "/item/itemAdd")
+    public String itemAdd(Items items) throws Exception {
+        itemsService.insertItems(items);
+        return "redirect:/list";
+    }
+
     // 如果Controller中接收的入参是QueryVo,那么页面上input框的name属性值要等于"属性.属性..."的形式
     @RequestMapping(value = "/item/delAll")
     public String queryItem(QueryVo vo) throws Exception {
@@ -103,20 +106,13 @@ public class ItemsController {
         return "redirect:/list";
     }
 
-    @RequestMapping(value = "/item/itemAdd")
-    public String itemAdd(Items items) throws Exception {
-        itemsService.insertItems(items);
-        return "redirect:/list";
-    }
-
     @RequestMapping(value = "/item/updateAll")
     public String updateAll(QueryVo vo) throws Exception {
         List<Items> itemsList = vo.getItemsList();
         Integer[] ids = vo.getIds();
 
-        if (ids == null) {
-            return "redirect:/list?u=true";
-        }
+        if (ids == null) return "redirect:/update";
+
         for (Integer id : ids) {
             for (Items items : itemsList) {
                 if (id == items.getId()) {
@@ -125,7 +121,8 @@ public class ItemsController {
                 }
             }
         }
-        return "redirect:/list?u=true";
+
+        return "redirect:/update";
     }
 
     @RequestMapping(value = "/item/sendJson")
