@@ -9,7 +9,7 @@
     <title>查询商品列表</title>
 </head>
 <body>
-<form action="${pageContext.request.contextPath }/item/itemAdd.action" method="post">
+<form action="${pageContext.request.contextPath }/item/itemAdd" method="post">
     添加商品：
     <table width="100%" border=1>
         <tr>
@@ -22,7 +22,7 @@
         </tr>
     </table>
 </form>
-<form action="${pageContext.request.contextPath }/item/updateAll.action" method="post">
+<form action="${pageContext.request.contextPath }/item/updateAll" method="post">
     商品列表：
     <table width="100%" border=1>
         <tr>
@@ -38,15 +38,14 @@
             <tr>
                 <td>
                     <input name="ids" value="${item.id}" type="checkbox">
-                    <input name="itemsList[${vs.index}].id" value="${item.id}" type="hidden">
-                </td>
-                <td><input name="itemsList[${vs.index}].name" value="${item.name }" type="text"></td>
-                <td><input name="itemsList[${vs.index}].price" value="${item.price }" type="text"></td>
+                    <input name="itemsList[${vs.index}].id" value="${item.id}" type="hidden"></td>
+                <td><input name="itemsList[${vs.index}].name" value="${item.name}" type="text"></td>
+                <td><input name="itemsList[${vs.index}].price" value="${item.price}" type="text"></td>
                 <td><input name="itemsList[${vs.index}].createtime" type="text"
                            value="<fmt:formatDate value="${item.createtime}" pattern="yyyy-MM-dd HH:mm:ss"/>"></td>
-                <td><input name="itemsList[${vs.index}].detail" value="${item.detail }" type="text"></td>
+                <td><input name="itemsList[${vs.index}].detail" value="${item.detail}" type="text"></td>
 
-                <td><a href="${pageContext.request.contextPath }/itemEdit.action?id=${item.id}">修改</a></td>
+                <td><a href="${pageContext.request.contextPath }/itemEdit?id=${item.id}">修改</a></td>
             </tr>
         </c:forEach>
         <td><input type="submit" value="批量更新"></td>

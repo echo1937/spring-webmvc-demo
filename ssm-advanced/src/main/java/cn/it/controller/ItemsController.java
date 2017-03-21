@@ -24,7 +24,7 @@ public class ItemsController {
     @Autowired
     private ItemsService itemsService;
 
-    @RequestMapping(value = {"/list.action"})
+    @RequestMapping(value = {"/list"})
     public ModelAndView itemsList(boolean u) throws Exception {
         List<Items> itemsList = itemsService.list();
 
@@ -68,7 +68,6 @@ public class ItemsController {
         return "editItem";
     }
 
-
     /**
      * 也支持直接接收基本类型：public String update(Integer id, String name, Float price, String detail) throws Exception {}
      *
@@ -90,7 +89,7 @@ public class ItemsController {
         items.setPic(s);
 
         itemsService.updateItems(items);
-        return "redirect:/list.action";
+        return "redirect:/list";
     }
 
     // 如果Controller中接收的入参是QueryVo,那么页面上input框的name属性值要等于"属性.属性..."的形式
@@ -101,13 +100,13 @@ public class ItemsController {
         for (Integer id : ids) {
             itemsService.deleteItems(id);
         }
-        return "redirect:/list.action";
+        return "redirect:/list";
     }
 
     @RequestMapping(value = "/item/itemAdd")
     public String itemAdd(Items items) throws Exception {
         itemsService.insertItems(items);
-        return "redirect:/list.action";
+        return "redirect:/list";
     }
 
     @RequestMapping(value = "/item/updateAll")
@@ -116,7 +115,7 @@ public class ItemsController {
         Integer[] ids = vo.getIds();
 
         if (ids == null) {
-            return "redirect:/list.action?u=true";
+            return "redirect:/list?u=true";
         }
         for (Integer id : ids) {
             for (Items items : itemsList) {
@@ -126,10 +125,10 @@ public class ItemsController {
                 }
             }
         }
-        return "redirect:/list.action?u=true";
+        return "redirect:/list?u=true";
     }
 
-    @RequestMapping(value = "/item/sendJson.action")
+    @RequestMapping(value = "/item/sendJson")
     @ResponseBody
     public Items json(@RequestBody Items items) throws Exception {
         // Spring MVC将Json格式字符串自动转化为Java对象, 要求json的key与Items的属性名相同

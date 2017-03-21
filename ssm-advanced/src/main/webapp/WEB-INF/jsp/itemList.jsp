@@ -14,7 +14,7 @@
     function request_json() {
         $.ajax({
             type: "post",
-            url: "${pageContext.request.contextPath }/item/sendJson.action",
+            url: "${pageContext.request.contextPath }/item/sendJson",
             contentType: "application/json;charset=utf-8",
             data: '{"name":"测试商品","price":99.9}',
             success: function (data) {
@@ -24,7 +24,7 @@
     }
 </script>
 <input type="button" value="sendJson" onclick="request_json()">
-<form action="${pageContext.request.contextPath }/item/itemAdd.action" method="post">
+<form action="${pageContext.request.contextPath }/item/itemAdd" method="post">
     添加商品：
     <table width="100%" border=1>
         <tr>
@@ -37,7 +37,7 @@
         </tr>
     </table>
 </form>
-<form action="${pageContext.request.contextPath }/item/delAll.action" method="post">
+<form action="${pageContext.request.contextPath }/item/delAll" method="post">
     商品列表：
     <table width="100%" border=1>
         <tr>
@@ -55,7 +55,7 @@
                 <td>${item.price }</td>
                 <td><fmt:formatDate value="${item.createtime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${item.detail }</td>
-                <td><a href="${pageContext.request.contextPath }/itemEdit.action?id=${item.id}">修改</a></td>
+                <td><a href="${pageContext.request.contextPath }/itemEdit?id=${item.id}">修改</a></td>
             </tr>
         </c:forEach>
         <td><input type="submit" value="批量删除"></td>
